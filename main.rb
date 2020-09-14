@@ -7,178 +7,284 @@ Assignment 1
 
 require 'csv'
 
-#Declare Variables
-menu_selection=
-$main_arr = Hash.new
-$group = []
+class Methods #Create a class called Methods, which is where all of the methods called in the main menu are stored
 
-#Method 1: View student data currently stored in the system
-def view_data()
-  if $main_arr.length == 0
-    print("There is currently no data stored in the system.")
-  else
-    #$main_arr.each{|val| puts "#{val}"}
-    $main_arr.each_with_index {|val, index| puts "#{val} => #{index}" }
-  end
-  puts
-end
+  @@main_hash = Hash.new #Created a new class Hash called main_hash
+  @@group1 = Hash.new #Created a new class Hash called group1
 
-#Method 2: Input Student Data
-def input_data()
-  loop do
-    file_name = ""
-    print("Please Enter a File Name: ")
-    file_name = gets.chomp
-
-    if(File.exist?(file_name))
-      $main_arr = CSV.parse(File.read(file_name), headers: true) #
-      puts("Data Entered!")
-      return
+  #Method 1: View student data currently stored in the system DONE
+  def view_data()
+    if @@main_hash.length == 0
+      print("There is currently no data stored in the system.") #If there is no info in the main_hash, an error message is returned
     else
-      puts("Invalid File.")
-      puts
+    @@main_hash.each{|v| puts "#{v}"}
+     #@@main_hash.each_with_index {|val, index| puts "#{val} => #{index}" } #If there is info in the main_hash, then it is printed onto the screen
     end
-  end
-end
-
-#Method 3: Modify Student Data
-def modify_data()
-  selection_2 =
-  user_delete =
-  user_edit =
-  user_changes =
-
-  loop do
-    puts("Please Select How You Would Like to Modify the Data: ")
-    puts("1. Add Student")
-    puts("2. Delete Student")
-    puts("3. Edit Student Entry")
-    puts("4. Return to Main Menu")
     puts
-    print("Enter your Selection: ")
-    selection_2 = gets.chomp
-
-    if selection_2 == "1"
-      user_insert = Array.new
-      print("Please Enter Student Data: ")
-      user_insert = gets.chomp
-
-      $main_arr.push(Array(user_insert))
-      puts("Data Entered!")
-      puts
-    elsif selection_2 == "2"
-      $main_arr.each_with_index {|val, index| puts "#{val} => #{index}" }
-      print("Please Enter the Row Number of the Student Entry to Delete: ")
-      user_delete = gets.chomp
-      $main_arr.delete_at(user_delete.to_i)
-      puts("Data Removed!")
-      puts
-    elsif selection_2 == "3"
-      $main_arr.each_with_index {|val, index| puts "#{val} => #{index}"}
-      print("Please Enter the Row Number of the Student Entry to Modify: ")
-      user_edit = gets.chomp
-      print($main_arr[user_edit.to_i])
-      puts
-
-      print("Please Enter New Information for this Entry: ")
-      user_changes = gets.chomp
-      $main_arr[user_edit.to_i].replace(Array(user_changes))
-
-      puts("Entry Changed!")
-      puts
-    elsif selection_2 == "4"
-      return
-    else
-      puts "Error: Please Enter a Valid Selection"
-      puts
-    end
   end
-end
 
-#Method 4: Form a Group
-def form_group()
-  selection_3 =
-  selection_4 =
+  #Method 2: Input Student Data
+  def input_data()
 
-  loop do
-    puts("Please Select How You Would Like to Divide the Groups: ")
-    puts("1. Divide by Section")
-    puts("2. Divide by Major")
-    puts("3. Divide Alphabetically")
-    puts("4. Divide Randomly")
-    puts("5. Return to Main Men")
-    puts
-    print("Enter your Selection: ")
-    selection_3 = gets.chomp
+    loop do
+      file_name =
+      print("Please Enter a File Name: ")
+      file_name = gets.chomp
 
-    if selection_3 == "1" || selection_3 == "2"|| selection_3 == "3" || selection_3 == "4"
-        puts("Please Select How Many Groups to Form: ")
-        puts("2")
-        puts("3")
-        puts("4")
+      if(File.exist?(file_name))
+        @@main_hash = CSV.read(file_name, headers: true) #File.read()
+
+        puts("Data Entered!")
+        return
+      elsif file_name == ":exit"
+        puts("Returning to Main Menu")
+        return
+      else
+        puts("Invalid File.")
         puts
-        print("Enter your Selection: ")
-        selection_4 = gets.chomp
+      end
+    end
+  end
 
-        if selection_4 == "2"
-          puts("Make 2 Groups")
-          return
-        elsif selection_4 == "3"
-          puts("Make 3 Groups")
-          return
-        elsif selection_4 == "4"
-          puts("Make 4 Groups")
+  #Method 3: Modify Student Data
+  def modify_data()
+    selection_2 =
+    user_add =
+    user_delete =
+    user_edit =
+    user_changes =
+
+    loop do
+      puts("Please Select How You Would Like to Modify the Data: ")
+      puts("1. Add Student")
+      puts("2. Delete Student")
+      puts("3. Edit Student Entry")
+      puts("4. Return to Main Menu")
+      puts
+      print("Enter your Selection: ")
+      selection_2 = gets.chomp
+
+      if selection_2 == "1"
+        new_hash = Array.new
+
+        print("Please Enter First Name of New Student: ")
+        user_add = gets.chomp
+        new_hash[0] = user_add
+        print("Please Enter Last Name of New Student: ")
+        user_add = gets.chomp
+        new_hash[1] = user_add
+        print("Please Enter Email of New Student: ")
+        user_add = gets.chomp
+        new_hash[2] = user_add
+        print("Please Enter Section of New Student: ")
+        user_add = gets.chomp
+        new_hash[3] = user_add
+        print("Please Enter Major of New Student: ")
+        user_add = gets.chomp
+        new_hash[4] = user_add
+        print("Please Enter 2nd Major of New Student (Optional): ")
+        user_add = gets.chomp
+        new_hash[5] = user_add
+        print("Please Enter Minor of New Student (Optional): ")
+        user_add = gets.chomp
+        new_hash[6] = user_add
+        print("Please Enter 2nd Minor of New Student (Optional): ")
+        user_add = gets.chomp
+        new_hash[7] = user_add
+
+        @@main_hash.push(Array(new_hash))
+        puts
+        puts("Data Entered!")
+        puts
+      elsif selection_2 == "2"
+        @@main_hash.each_with_index {|val, index| puts "#{val} => #{index}" }
+        print("Please Enter the Row Number of the Student Entry to Delete: ")
+        user_delete = gets.chomp
+        @@main_hash.delete(user_delete.to_i)
+        puts("Data Removed!")
+        puts
+      elsif selection_2 == "3"
+        @@main_hash.each_with_index {|val, index| puts "#{val} => #{index}"}
+        print("Please Enter the Row Number of the Student Entry to Modify: ")
+        user_edit = gets.chomp
+        puts
+        print(@@main_hash[user_edit.to_i])
+        puts
+
+        print("Please Enter the First Name this Entry: ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][0] = user_changes
+        print("Please Enter the Last Name this Entry: ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][1] = user_changes
+        print("Please Enter the Email for this Entry: ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][2] = user_changes
+        print("Please Enter the Section for this Entry: ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][3] = user_changes
+        print("Please Enter the Major for this Entry: ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][4] = user_changes
+        print("Please Enter the 2nd Major for this Entry(Optional): ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][5] = user_changes
+        print("Please Enter the Minor for this Entry(Optional): ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][6] = user_changes
+        print("Please Enter the 2nd Minor for this Entry(Optional): ")
+        user_changes = gets.chomp
+        @@main_hash[user_edit.to_i][7] = user_changes
+
+        puts
+        puts("Entry Changed!")
+        puts
+      elsif selection_2 == "4"
+        return
+      else
+        puts "Error: Please Enter a Valid Selection"
+        puts
+      end
+    end
+  end
+
+  #Method 4: Form a Group
+  def form_group()
+    selection_3 =
+    selection_4 =
+
+    loop do
+      puts("Please Select How You Would Like to Divide the Groups: ")
+      puts("1. Divide by Section")
+      puts("2. Divide by Major")
+      puts("3. Divide Alphabetically")
+      puts("4. Divide by Section and Alphabetically")
+      puts("5. Divide by Section and Major")
+      puts("6. Divide Randomly")
+      puts("7. Return to Main Men")
+      puts
+      print("Enter your Selection: ")
+      selection_3 = gets.chomp
+
+      if selection_3 == "1"
+      #  @@group1 = @@main_hash.group_by{|v| v["section"]}.to_h
+        @@group1 = @@main_hash.group_by{|v| v["section"]}.to_h
+        puts("Divide by Section")
+        puts
+      elsif selection_3 == "2"
+        @@group1 = @@main_hash.group_by{|v| v["major1"]}.to_h
+        puts("Divide by Major")
+        puts
+      elsif selection_3 == "3" #MAKE THIS A HASH
+        group_count2 =
+        alphabet = Hash.new
+
+        alphabet = @@main_hash.sort_by{|v| v["last_name"]}
+        print("Please Select How Many Studnts You Want in Each Group: ")
+        group_count2 = gets.chomp
+        if group_count2 == ":exit"
+          puts("Returning to Main Menu")
           return
         else
-          puts("Invalid Option")
-          puts
+          @@group1 = alphabet.each_slice(group_count2.to_i).to_h
+        end
+        puts("Divide Alphabetically")
+        puts
+      elsif selection_3 == "4" #FIX THIS
+        alphabet2 = Hash.new
+
+        alphabet2 = @@main_hash.sort_by{|v| v["last_name"]}
+        @@group1 = alphabet2.group_by{|v| v["section"]}.to_h
+        puts("Divided Alphabetically and by Section")
+        puts
+      elsif selection_3 == "5" #FIX THIS
+        section = Hash.new
+
+        section = @@main_hash.group_by{|v| v["section"]}.to_h
+        @@group1 = section.group_by{|v| v["major1".to_i]}.to_h
+        puts("Divide by Section and Major")
+        puts()
+      elsif selection_3 == "6"
+        group_count =
+        print("Please Select How Many Studnts You Want int Each Group: ")
+        group_count = gets.chomp
+        if group_count == ":exit"
+          puts("Returning to Main Menu")
+          return
+        else
+          @@group1 = @@main_hash.each_slice(group_count.to_i).to_a.shuffle
+        end
+
+        puts("Divide Radomly")
+        puts
+      elsif selection_3 == "7"
+        return
+      else
+        puts "Error: Please Enter a Valid Selection"
+        puts
       end
-    elsif selection_3 == "5"
+    end
+  end
+
+  #Method 5: View a Group
+  def view_group()
+  #  puts(@@main_hash.first.to_h)
+    puts(@@main_hash)
+#    if @@group1.length == 0
+#      print("There is currently no group.")
+#    else
+#      puts( @@group1
+      #  @@group1.each{ |k, v|
+      #    puts("(#{k}, #{v}")
+      #    if k != @@group1.keys.last
+      #      puts(",\n")
+      #      puts("\n")
+      #    end
+      #  }
+#      )
+#    end
+  end
+
+  #Method 6: Export Group Data to File
+  def export_group()
+    export_file =
+
+    #REPLACE @@main_hash with group array when ready
+    if @@group1.length == 0
+      puts("There is currently no group.")
       return
     else
-      puts "Error: Please Enter a Valid Selection"
-      puts
+      print("Please Enter File Name to Export Data To (.txt File): ")
+      export_file = gets.chomp
+
+      if export_file == ":exit"
+        puts("Returning to Main Menu")
+        return
+      else
+        File.open(export_file, 'w') do |file|
+        @@group1.each{ |k, v|
+          file.write("(#{k}, #{v}")
+          if k != @@group1.keys.last
+            file.write(",\n")
+            file.write("\n")
+          end
+        }
+        puts("File " + export_file + " Created!")
+        end
+      end
     end
   end
 end
 
+#THIS SECTION OF CODE GENERATES THE MAIN MENU AND CALLS OBJECTS FROM THE METHODS CLASS
+menu_selection = #Created a new variable called menu_selection which will store the user's method selection value
 
-#Method 5: View a Group
-def view_group()
-  if $group.length == 0
-    print("There is currently no group.")
-  else
-    puts($group)
-  end
-  puts
-end
-
-#Method 6: Export Group Data to File
-def export_group()
-  explot_file = ""
-
-  #REPLACE main_arr with group array when ready
-  if $main_arr.length == 0
-    puts("There is currently no group.")
-    return
-  else
-    print("Please Enter File Name to Export Data To (.txt File): ")
-    export_file = gets.chomp
-
-    File.open(export_file, "w") do |file|
-      file.write($main_arr)
-    puts("File " + export_file + " Created!")
-    end
-  end
-end
-
-#This section of code is what is shown in the terminal
 puts
-puts ("Welcome to the Ruby Student Database!")
+puts ("Welcome to the Ruby Student Database!") #Print out a welcome message onto the screen
 puts
 
-loop do
-  puts ("Please Enter a Number to Select an Option from the List Below:")
+loop do #Created a loop that will continue to run the program until the user quits.
+  puts ("Please Enter a Number to Select an Option from the List Below:") #Created a menu with options for the user to choose from
   puts("1. View Student Data")
   puts("2. Input Student Data")
   puts("3. Modify Student Data")
@@ -186,30 +292,29 @@ loop do
   puts("5. View Current Group")
   puts("6. Export Group Data to File")
   puts("7. Exit Program")
+  puts("Enter ':exit' in any Sub-Menu to Return to Main Menu")
   puts
-
   print("Enter your Selection: ")
-  menu_selection= gets.chomp
+  menu_selection= gets.chomp #Set menu_selection equal to the value the user enters
   puts
 
-  if menu_selection== "1"
-    puts(view_data)
+  if menu_selection== "1" #Create new instances of the Methods class that call the desired function
+    puts(Methods.new.view_data)
   elsif menu_selection== "2"
-    puts(input_data)
+    puts(Methods.new.input_data)
   elsif menu_selection== "3"
-    puts(modify_data)
+    puts(Methods.new.modify_data)
   elsif menu_selection== "4"
-    puts(form_group)
+    puts(Methods.new.form_group)
   elsif menu_selection== "5"
-    #puts(view_group)
-    puts($main_arr[9])
+    puts(Methods.new.view_group)
   elsif menu_selection== "6"
-    puts(export_group)
+    puts(Methods.new.export_group)
   elsif menu_selection== "7"
     puts("Thank You!")
-    exit
+    exit #If the user chooses this option, the program will stop running
   else
-    puts "Error: Please Enter a Valid Selection"
+    puts "Error: Please Enter a Valid Selection" #If none of the specified values are entered, an error message is printed and the select screen loops again
     puts
   end
 end
