@@ -6,14 +6,29 @@ Assignment 1
 =end
 
 require 'csv'
-require 'enumerator'
+#require 'smarter_csv'
+#require 'enumerator'
 
-class Methods
+#class Student
+#  Struct.new(:first_name, :last_name, :email, :section, :major1, :major2, :minor1, :minor2)
+#end
+
+class Methods #Create a class called Methods, which is where all of the methods called in the main menu are stored
 
   #keys = ["first_name", "last_name", "email", "section", "major1", "major2", "minor1", "minor2"]
-  @@main_hash = Hash.new#[keys.each_with_object(nil).to_a]
-  @@group1 = Hash.new
-  @@group2 = Hash.new
+#  @@main_hash = { #Declared a new class Hash called main_hash
+#      @first_name => "", #Passed in 8 values to act as keys within the hash
+#      @last_name => "",
+#      @email => "",
+#      @section => "",
+#      @major1 => "",
+#      @major2 => "",
+#      @minor1 => "",
+#      @minor2 => "",
+#  }
+
+  @@main_hash = Array.new
+  @@group1 = Hash.new #Created a new class Hash called group1
 
   #def initialize(first_name, last_name, email, section, major1, major2, minor1, minor2)
   #    @first_name = first_name
@@ -26,49 +41,49 @@ class Methods
   #    @minor2 = minor2
   #end
 
-  #Method 1: View student data currently stored in the system
+  #Method 1: View student data currently stored in the system DONE
   def view_data()
     if @@main_hash.length == 0
-      print("There is currently no data stored in the system.")
+      print("There is currently no data stored in the system.") #If there is no info in the main_hash, an error message is returned
     else
-      #@@main_hash.each{|val| puts "#{val}"}
-      @@main_hash.each_with_index {|val, index| puts "#{val} => #{index}" }
+    @@main_hash.each{|v| puts "#{v}"}
+     #@@main_hash.each_with_index {|val, index| puts "#{val} => #{index}" } #If there is info in the main_hash, then it is printed onto the screen
     end
     puts
   end
 
   #Method 2: Input Student Data
   def input_data()
-    #setName = Hash.new
+
     loop do
-      file_name = ""
+      file_name =
       print("Please Enter a File Name: ")
       file_name = gets.chomp
 
-    #  initialize = CSV.parse(File.read(file_name), headers: true)
-    #  puts("Data Entered!")
-    #  return
-
       if(File.exist?(file_name))
+      #  @@main_hash = SmarterCSV.process(file_name)
+      #  array = Array.new
+        f = File.open(file_name, "r")
+        while (line = f.gets)
+          arr = line.split(',')
+      #    @@main_hash.push({
+      #        first_name: arr[0],
+      #        last_name: arr[1],
+      #        email: arr[2],
+      #        section: arr[3],
+      #        major1: arr[4],
+      #        major2: arr[5],
+      #        minor1: arr[6],
+      #        minor2: arr[7],
+      #    })
+        end
+        f.close
 
-        @@main_hash = CSV.parse(File.read(file_name), headers: true)#
+
+        #@@main_hash = CSV.read(file_name, headers: true) #File.read()
+
         puts("Data Entered!")
         return
-
-        #file = File.open(file_name).each do |line|
-        #  if line.split.length == 8
-      #      first_name, last_name, email, section, major1, major2, minor1, minor2 = line.chomp.split(" ")
-      #      @first_name = first_name
-      #      @last_name = last_name
-      #      @email = email
-      #      @section = section
-      #      @major1 = major1
-      #      @major2 = major2
-      #      @minor1 = minor1
-      #      @minor2 = minor2
-      #    end
-      #    setName[first_name] = first_name
-      #  end
       else
         puts("Invalid File.")
         puts
@@ -197,37 +212,37 @@ class Methods
       selection_3 = gets.chomp
 
       if selection_3 == "1"
-        @@group1 = @@main_hash.group_by{|x| x["section"]}.to_h
-
+      #  @@group1 = @@main_hash.group_by{|v| v["section"]}.to_h
+        @@group1 = @@main_hash.group_by{|v| v["section"]}.to_h
         puts("Divide by Section")
         puts
       elsif selection_3 == "2"
-        @@group1 = @@main_hash.group_by{|x| x["major1"]}.to_h
+        @@group1 = @@main_hash.group_by{|v| v["major1"]}.to_h
         puts("Divide by Major")
         puts
       elsif selection_3 == "3" #MAKE THIS A HASH
         group_count2 =
         alphabet = Hash.new
 
-        alphabet = @@main_hash.sort_by{|x| x["last_name"]}
+        alphabet = @@main_hash.sort_by{|v| v["last_name"]}
         print("Please Select How Many Studnts You Want in Each Group: ")
         group_count2 = gets.chomp
-        @@group1 = alphabet.each_slice(group_count2.to_i).to_a
+        @@group1 = alphabet.each_slice(group_count2.to_i).to_h
 
         puts("Divide Alphabetically")
         puts
       elsif selection_3 == "4" #FIX THIS
         alphabet2 = Hash.new
 
-        alphabet2 = @@main_hash.sort_by{|x| x["last_name"]}
-        @@group1 = alphabet2.group_by{|x| x["section"]}.to_h
+        alphabet2 = @@main_hash.sort_by{|v| v["last_name"]}
+        @@group1 = alphabet2.group_by{|v| v["section"]}.to_h
         puts("Divided Alphabetically and by Section")
-        puts()
+        puts
       elsif selection_3 == "5" #FIX THIS
         section = Hash.new
 
-        section = @@main_hash.group_by{|x| x["section"]}.to_h
-        @@group1 = section.group_by{|x| x["major1".to_i]}.to_h
+        section = @@main_hash.group_by{|v| v["section"]}.to_h
+        @@group1 = section.group_by{|v| v["major1".to_i]}.to_h
         puts("Divide by Section and Major")
         puts()
       elsif selection_3 == "6"
@@ -249,24 +264,21 @@ class Methods
 
 #Method 5: View a Group
   def view_group()
-
-    #  puts(@@main_hash.find_all{|row| row["section"] == "9"})
-    #  puts(@@main_hash.count{|row| row["section"] == "9"})
-    #puts(@@main_hash.count{|row| row["section"] == "9")
-    #puts(@@main_hash[0]["section"])
-
-    #puts(@@main_hash[1]["section".to_i])
-    puts(@@group1)
-    #puts(@@group2)
-    #puts(@@group3)
-
-  #  if @@group1.length == 0 || @@group2.length == 0
-  #    print("There is currently no group.")
+  #  puts(@@main_hash.first.to_h)
+    puts(@@main_hash)
+#    if @@group1.length == 0
+#      print("There is currently no group.")
 #    else
-#      puts(@@group1)
-#      puts(@@group2)
+#      puts( @@group1
+      #  @@group1.each{ |k, v|
+      #    puts("(#{k}, #{v}")
+      #    if k != @@group1.keys.last
+      #      puts(",\n")
+      #      puts("\n")
+      #    end
+      #  }
+#      )
 #    end
-#    puts
   end
 
   #Method 6: Export Group Data to File
@@ -280,25 +292,29 @@ class Methods
     else
       print("Please Enter File Name to Export Data To (.txt File): ")
       export_file = gets.chomp
-
-      File.open(export_file, "w") do |file|
-        file.write(@@group1)
+      File.open(export_file, 'w') do |file|
+        @@group1.each{ |k, v|
+          file.write("(#{k}, #{v}")
+          if k != @@group1.keys.last
+            file.write(",\n")
+            file.write("\n")
+          end
+        }
       puts("File " + export_file + " Created!")
       end
     end
   end
-
 end
 
 #THIS SECTION OF CODE GENERATES THE MAIN MENU AND CALLS OBJECTS FROM THE METHODS CLASS
-menu_selection =
+menu_selection = #Created a new variable called menu_selection which will store the user's method selection value
 
 puts
-puts ("Welcome to the Ruby Student Database!")
+puts ("Welcome to the Ruby Student Database!") #Print out a welcome message onto the screen
 puts
 
-loop do
-  puts ("Please Enter a Number to Select an Option from the List Below:")
+loop do #Created a loop that will continue to run the program until the user quits.
+  puts ("Please Enter a Number to Select an Option from the List Below:") #Created a menu with options for the user to choose from
   puts("1. View Student Data")
   puts("2. Input Student Data")
   puts("3. Modify Student Data")
@@ -307,12 +323,11 @@ loop do
   puts("6. Export Group Data to File")
   puts("7. Exit Program")
   puts
-
   print("Enter your Selection: ")
-  menu_selection= gets.chomp
+  menu_selection= gets.chomp #Set menu_selection equal to the value the user enters
   puts
 
-  if menu_selection== "1"
+  if menu_selection== "1" #Create new instances of the Methods class that call the desired function
     puts(Methods.new.view_data)
   elsif menu_selection== "2"
     puts(Methods.new.input_data)
@@ -326,9 +341,9 @@ loop do
     puts(Methods.new.export_group)
   elsif menu_selection== "7"
     puts("Thank You!")
-    exit
+    exit #If the user chooses this option, the program will stop running
   else
-    puts "Error: Please Enter a Valid Selection"
+    puts "Error: Please Enter a Valid Selection" #If none of the specified values are entered, an error message is printed and the select screen loops again
     puts
   end
 end
