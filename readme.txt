@@ -47,6 +47,18 @@ INSTRUCTIONS FOR RUNNING THE PROGRAM
       stored in the repository
 13. In the main menu, type >7 to exit the program
 
+RESUBMISSION CHANGES
+1. Replaced If..elsif statements with case statements
+  -Lines: 21-33, 41-53, 119-183, 208-247, 339-358
+2. Eliminated long blocks of similar, repetitive code by utilizing 3 new methods
+  -Method Names: add_entry_val, edit_entry, arr_hash
+3. Mandatory data fields now are required and will print message to user if the field is left blank
+  -Accomplished within the add_entry_val and edit_entry methods
+4. Store CSV data in an array of hashes, rather than a CSV::Table
+  -Lines: 12, 87-89
+5. Reformatted print-outs of groups to be more visually appealing
+  -Did this for all groupings except for those group by two values
+  -Lines: 265-275, 299-310
 
 KNOWN BUGS, ISSUES OR LIMITATIONS
 1. Can only read in and store one external CSV file at a time
@@ -56,16 +68,10 @@ KNOWN BUGS, ISSUES OR LIMITATIONS
 3. When editing a student entry, all information about the student must be re-entered
       -Although it works and allows the user to edit multiple fields at once, it is not intuitive if the
       user only wants to edit one field
-4. Mandatory data fields are not forced to be entered in the system
-      -When prompted to enter data, the fields are labeled appropriately, but no errors are given if a required
-      field is left empty
-5. Dividing the data into groups does not divide the data evenly or based on a specified number of students
+4. Dividing the data into groups does not divide the data evenly or based on a specified number of students
       -Dividing the data only puts it into the category specified. This means that the user has no option to choose
       how many students they want per group. This also means that groups of one student will exist.
-6. The format of the groups (view and export) is not visually pleasing
-      -The view/export of the group data still contains the headers for all fields and each student in the same group
-      is on the same line. This is hard to read and may be harder for a teacher to known the groups at a quick glance
-7. When an option is chosen within a sub-menu, most require an entry for the program to keep going. These menus include:
+5. When an option is chosen within a sub-menu, most require an entry for the program to keep going. These menus include:
       -Entering a CSV file
       -Adding, deleting, modifying student data
       -Exporting data to file
